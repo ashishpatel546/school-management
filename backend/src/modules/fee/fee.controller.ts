@@ -1,6 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { Response } from 'express';
 import { FeeService } from './fee.service';
+import { PdfService } from '../pdf/pdf.service';
 import { CreateFeeDto, UpdateFeeDto, PayFeeDto } from './dto/fee.dto';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../../auth/guards/roles.guard';
@@ -12,7 +14,10 @@ import { UserRole } from '../../entities/user.entity';
 @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiBearerAuth()
 export class FeeController {
-  constructor(private readonly feeService: FeeService) {}
+  constructor(
+    private readonly feeService: FeeService,
+    private readonly pdfService: PdfService,
+  ) {}
 
   @Post()
   @Roles(UserRole.ADMIN, UserRole.SUPER_ADMIN)
@@ -100,5 +105,21 @@ export class FeeController {
   @ApiResponse({ status: 404, description: 'Fee record not found' })
   remove(@Param('id') id: string) {
     return this.feeService.remove(id);
+  }
+
+  @Get(':id/invoice')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({ summary: 'Download fee invoice' })
+  async downloadInvoice(@Param('id') id: string, @Res() res: Response) {
+    const fee = await this.feeService.findOne(id);
+    const pdfBuffer = await this.pdfService.generateFeeInvoice(fee);
+    
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename=invoice-${id}.pdf`,
+      'Content-Length': pdfBuffer.length,
+    });
+    
+    res.end(pdfBuffer);
   }
 }
