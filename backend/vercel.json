@@ -11,5 +11,11 @@
       "src": "/(.*)",
       "dest": "dist/main.js"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production",
+    "DATABASE_TYPE": "sqlite",
+    "DATABASE_NAME": ":memory:",
+    "PORT": "8000"
+  }
 }
