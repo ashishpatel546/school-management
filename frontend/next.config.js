@@ -7,7 +7,7 @@ const nextConfig = {
     unoptimized: true,
   },
   env: {
-    NEXT_PUBLIC_API_URL: 'https://school-management-app-tunnel-voon0qqt.devinapps.com',
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://backend:8000',
   },
   // Add logging for debugging
   webpack: (config, { isServer }) => {
