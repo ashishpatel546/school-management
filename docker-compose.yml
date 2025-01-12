@@ -1,34 +1,37 @@
-version: '3.8'
-
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
     ports:
       - "8000:8000"
     environment:
-      - NODE_ENV=production
-      - DATABASE_TYPE=sqlite
-      - DATABASE_NAME=:memory:
-      - JWT_SECRET=your-secret-key-here
-      - JWT_EXPIRATION=3600
-      - PORT=8000
-    volumes:
-      - ./backend:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run start:prod
+      NODE_ENV: production
+      DATABASE_TYPE: sqlite
+      DATABASE_NAME: ":memory:"
+      JWT_SECRET: "school_management_system_secret_key_2024"
+      JWT_EXPIRATION: "86400"
+      PORT: "8000"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
     ports:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://backend:8000
-    volumes:
-      - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    restart: unless-stopped

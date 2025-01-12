@@ -27,3 +27,12 @@ export interface ApiError {
   message: string
   statusCode: number
 }
+
+export interface FeatureType {
+  id: string
+  name: string
+  description?: string
+  isEnabled: boolean
+  createdAt: Date
+  updatedAt: Date
+}
