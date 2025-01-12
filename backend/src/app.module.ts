@@ -14,7 +14,8 @@ import { FeeModule } from './modules/fee/fee.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
 import { AdminModule } from './modules/admin/admin.module';
 import { ExtraCurriculumModule } from './modules/extra-curriculum/extra-curriculum.module';
-import { CommunicationModule } from './modules/communication/communication.module';
+// Temporarily disabled for testing
+// import { CommunicationModule } from './modules/communication/communication.module';
 import { LibraryModule } from './modules/library/library.module';
 import { TransportationModule } from './modules/transportation/transportation.module';
 import { HomeworkModule } from './modules/homework/homework.module';
@@ -47,7 +48,7 @@ import { PdfModule } from './modules/pdf/pdf.module';
     AttendanceModule,
     AdminModule,
     ExtraCurriculumModule,
-    CommunicationModule,
+    // CommunicationModule, // Temporarily disabled for testing
     LibraryModule,
     TransportationModule,
     HomeworkModule,
