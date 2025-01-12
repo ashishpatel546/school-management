@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsDate, IsNumber, IsUUID } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsDate, IsNumber, IsUUID, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { ResourceType } from '../../../entities/resource-booking/resource.entity';
@@ -94,7 +94,7 @@ export class UpdateResourceDto {
   capacity?: number;
 
   @ApiProperty({ required: false })
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isAvailable?: boolean;
 }

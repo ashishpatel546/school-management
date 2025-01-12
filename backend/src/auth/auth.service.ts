@@ -4,7 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User, UserRole } from '../entities/user.entity';
-import { LoginDto, ChangePasswordDto, RegisterDto } from './dto/auth.dto';
+import { LoginDto, ChangePasswordDto, RegisterDto, CreateStudentDto } from './dto/auth.dto';
+import { UserService } from '../modules/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,12 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private userService: UserService,
   ) {}
+
+  async createStudent(createStudentDto: CreateStudentDto): Promise<User> {
+    return this.userService.createStudent(createStudentDto);
+  }
 
   async register(registerDto: RegisterDto) {
     const existingUser = await this.userRepository.findOne({

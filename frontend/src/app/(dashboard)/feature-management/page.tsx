@@ -6,13 +6,12 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Switch } from '@/components/ui/switch'
 import { Label } from '@/components/ui/label'
-import { FeatureType } from '@/lib/types'
 
 interface Feature {
   id: string
-  name: FeatureType
+  name: string
   isEnabled: boolean
-  description: string
+  description: string | null
 }
 
 export default function FeatureManagementPage() {

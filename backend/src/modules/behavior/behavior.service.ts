@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Raw } from 'typeorm';
 import { DisciplineRecord } from '../../entities/behavior/discipline-record.entity';
 import { User } from '../../entities/user.entity';
 import { CreateDisciplineRecordDto, ResolveDisciplineRecordDto, UpdateDisciplineRecordDto } from './dto/behavior.dto';
@@ -94,7 +94,7 @@ export class BehaviorService {
   async findByDateRange(startDate: Date, endDate: Date): Promise<DisciplineRecord[]> {
     return await this.disciplineRepository.find({
       where: {
-        date: Between(startDate, endDate),
+        date: Raw((alias) => `${alias} BETWEEN :start AND :end`, { start: startDate, end: endDate }),
       },
       relations: ['student', 'issuedBy', 'resolvedBy'],
       order: { date: 'DESC' },

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsOptional, IsUUID, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional, IsUUID, IsDate, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -69,7 +69,7 @@ export class UpdateBookLoanDto {
   condition?: string;
 
   @ApiProperty({ required: false })
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isReturned?: boolean;
 }

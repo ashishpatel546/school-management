@@ -15,7 +15,7 @@ export class BusStop {
   @Column('decimal', { precision: 10, scale: 6 })
   longitude: number;
 
-  @Column({ type: 'time' })
+  @Column({ type: 'text' })
   estimatedTime: string;
 
   @ManyToOne(() => BusRoute, route => route.stops)

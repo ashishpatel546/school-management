@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsArray, IsUrl, IsUUID, Min, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsEnum, IsNumber, IsArray, IsUrl, IsUUID, Min, IsDate, IsBoolean } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { MenuItemType } from '../../../entities/cafeteria/menu-item.entity';
@@ -121,7 +121,7 @@ export class UpdateMenuItemDto {
   imageUrl?: string;
 
   @ApiProperty({ required: false })
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isAvailable?: boolean;
 }

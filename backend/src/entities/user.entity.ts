@@ -19,6 +19,12 @@ export class User {
   @Column({ unique: true })
   mobileNumber: string;
 
+  @Column({ unique: true, nullable: false })
+  registrationNumber: string;
+
+  @Column({ nullable: true })
+  rollNumber: string;
+
   @Column()
   @Exclude()
   password: string;

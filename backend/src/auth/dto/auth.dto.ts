@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, MinLength, Matches, IsEnum } from 'class-validator';
+import { IsString, IsNotEmpty, MinLength, Matches, IsEnum, IsOptional, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '../../entities/user.entity';
 
@@ -39,6 +39,38 @@ export class LoginDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+}
+
+export class CreateStudentDto {
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  mobileNumber: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  registrationNumber?: string;
+
+  @ApiProperty({ required: false })
+  @IsString()
+  @IsOptional()
+  rollNumber?: string;
+
+  @ApiProperty()
+  @IsUUID()
+  @IsOptional()
+  classId?: string;
 }
 
 export class ChangePasswordDto {

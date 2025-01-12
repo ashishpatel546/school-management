@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Alumni } from '../../entities/alumni/alumni.entity';
+import { Alumni, EmploymentStatus } from '../../entities/alumni/alumni.entity';
 import { User } from '../../entities/user.entity';
 import { CreateAlumniDto, UpdateAlumniDto } from './dto/alumni.dto';
 
@@ -69,7 +69,7 @@ export class AlumniService {
 
   async findByEmploymentStatus(status: string): Promise<Alumni[]> {
     return await this.alumniRepository.find({
-      where: { employmentStatus: status, isActive: true },
+      where: { employmentStatus: status as EmploymentStatus, isActive: true },
       relations: ['user'],
     });
   }

@@ -1,6 +1,6 @@
 import { Controller, Post, Body, UseGuards, Request, Patch } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto, ChangePasswordDto, ResetPasswordDto, RegisterDto } from './dto/auth.dto';
+import { LoginDto, ChangePasswordDto, ResetPasswordDto, RegisterDto, CreateStudentDto } from './dto/auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/roles.decorator';
@@ -52,6 +52,12 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+
+  @Post('register/student')
+  @ApiOperation({ summary: 'Register a new student' })
+  async registerStudent(@Body() createStudentDto: CreateStudentDto) {
+    return this.authService.createStudent(createStudentDto);
   }
 
   @Patch('change-password')

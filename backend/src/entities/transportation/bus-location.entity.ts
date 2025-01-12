@@ -15,7 +15,7 @@ export class BusLocation {
   @Column('decimal', { precision: 10, scale: 6 })
   longitude: number;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'datetime' })
   timestamp: Date;
 
   @CreateDateColumn()

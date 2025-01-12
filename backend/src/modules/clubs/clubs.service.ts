@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Club } from '../../entities/clubs/club.entity';
+import { Repository, Raw } from 'typeorm';
+import { Club, ClubCategory } from '../../entities/clubs/club.entity';
 import { ClubEvent } from '../../entities/clubs/club-event.entity';
 import { User } from '../../entities/user.entity';
 import { CreateClubDto, CreateClubEventDto, UpdateClubDto, UpdateClubEventDto } from './dto/clubs.dto';
@@ -121,7 +121,7 @@ export class ClubsService {
 
   async findClubsByCategory(category: string): Promise<Club[]> {
     return await this.clubRepository.find({
-      where: { category, isActive: true },
+      where: { category: category as ClubCategory, isActive: true },
       relations: ['supervisor', 'members', 'events'],
     });
   }
@@ -130,7 +130,7 @@ export class ClubsService {
     const now = new Date();
     return await this.eventRepository.find({
       where: {
-        startDate: MoreThanOrEqual(now),
+        startDate: Raw((alias) => `${alias} >= :now`, { now }),
       },
       relations: ['club', 'organizer'],
       order: { startDate: 'ASC' },

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Raw } from 'typeorm';
 import { HealthRecord } from '../../entities/health/health-record.entity';
 import { User } from '../../entities/user.entity';
 import { CreateHealthRecordDto, UpdateHealthRecordDto } from './dto/health.dto';
@@ -81,7 +81,7 @@ export class HealthService {
   async findByDateRange(startDate: Date, endDate: Date): Promise<HealthRecord[]> {
     return await this.healthRepository.find({
       where: {
-        visitDate: Between(startDate, endDate),
+        visitDate: Raw((alias) => `${alias} BETWEEN :start AND :end`, { start: startDate, end: endDate }),
       },
       relations: ['student', 'attendedBy'],
       order: { visitDate: 'DESC' },

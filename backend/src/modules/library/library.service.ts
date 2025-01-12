@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Raw } from 'typeorm';
 import { Book } from '../../entities/library/book.entity';
 import { BookLoan } from '../../entities/library/book-loan.entity';
 import { User } from '../../entities/user.entity';
@@ -101,7 +101,7 @@ export class LibraryService {
     return await this.bookLoanRepository.find({
       where: {
         isReturned: false,
-        dueDate: { $lt: new Date() },
+        dueDate: Raw((alias) => `${alias} < :now`, { now: new Date() }),
       },
       relations: ['book', 'student'],
     });

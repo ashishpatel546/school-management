@@ -10,10 +10,10 @@ export class BusRoute {
   @Column()
   name: string;
 
-  @Column({ type: 'time' })
+  @Column({ type: 'text' })
   startTime: string;
 
-  @Column({ type: 'time' })
+  @Column({ type: 'text' })
   endTime: string;
 
   @ManyToOne(() => Bus, bus => bus.routes)
