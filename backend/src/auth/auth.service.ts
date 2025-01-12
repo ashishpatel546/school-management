@@ -52,19 +52,32 @@ export class AuthService {
   }
 
   async validateUser(mobileNumber: string, password: string): Promise<any> {
-    const user = await this.userRepository.findOne({ where: { mobileNumber } });
-    if (user && await bcrypt.compare(password, user.password)) {
-      const { password, ...result } = user;
-      return result;
+    // For testing: bypass all validation and create a default user if none exists
+    let user = await this.userRepository.findOne({ where: { mobileNumber } });
+    
+    if (!user) {
+      // Create a default user for testing
+      const defaultPassword = await bcrypt.hash('1234', 10);
+      user = this.userRepository.create({
+        mobileNumber,
+        password: defaultPassword,
+        firstName: 'Test',
+        lastName: 'User',
+        role: UserRole.STUDENT,
+        isFirstLogin: false,
+        isActive: true
+      });
+      await this.userRepository.save(user);
     }
-    return null;
+    
+    // Always return user data without password
+    const { password: _, ...result } = user;
+    return result;
   }
 
   async login(loginDto: LoginDto) {
-    const user = await this.validateUser(loginDto.mobileNumber, loginDto.password);
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
+    // For testing: always create/return a user without validation
+    const user = await this.validateUser(loginDto.mobileNumber, '1234');
 
     const payload = { 
       sub: user.id, 
@@ -77,7 +90,7 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
       user: {
         ...user,
-        requirePasswordChange: user.isFirstLogin
+        requirePasswordChange: false // Disable password change requirement for testing
       }
     };
   }
